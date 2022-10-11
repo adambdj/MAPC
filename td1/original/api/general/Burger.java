@@ -2,7 +2,7 @@ package td1.original.api.general;
 
 import java.util.List;
 
-public class Burger implements Product {
+public class Burger implements FoodProduct {
 
     String name;
     List<Product> items;
@@ -40,5 +40,15 @@ public class Burger implements Product {
 
 
         return buffer.toString();
+    }
+
+    @Override
+    public double calorie_per_100g() {
+        return 0;
+    }
+
+    @Override
+    public double calories() {
+        return 0;
     }
 }
