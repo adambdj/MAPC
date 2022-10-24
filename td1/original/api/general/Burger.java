@@ -2,12 +2,12 @@ package td1.original.api.general;
 
 import java.util.List;
 
-public class Burger implements FoodProduct {
+public abstract class Burger implements FoodProduct {
 
-    String name;
-    List<Product> items;
+    private String name;
+    private List<FoodProduct> items;
 
-    public Burger(String name, List<Product> items) {
+    protected Burger(String name, List<FoodProduct> items) {
         this.name = name;
         this.items = items;
     }
@@ -33,8 +33,8 @@ public class Burger implements FoodProduct {
         buffer.append(DELIM);
         buffer.append(String.format("price:         %.2f\n", price()));
         buffer.append(DELIM);
-        buffer.append(String.format("calories:      %.2f\n", price()));
-        buffer.append(String.format("calories/100g: %.2f\n", price()));
+        buffer.append(String.format("calories:      %.2f\n", calories()));
+        buffer.append(String.format("calories/100g: %.2f\n", calorie_per_100g()));
         buffer.append(DELIM);
 
 
@@ -43,12 +43,14 @@ public class Burger implements FoodProduct {
     }
 
     @Override
-    public double calorie_per_100g() {
-        return 0;
+    public double calorie_per_100g()
+    {
+        return calories() / weight() * 100;
     }
 
     @Override
-    public double calories() {
-        return 0;
+    public double calories()
+    {
+        return items.stream().map(FoodProduct::calories).reduce(0.0, Double::sum);
     }
 }
