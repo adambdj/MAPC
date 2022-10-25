@@ -3,7 +3,7 @@ package td2.forumsrefactored;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Salon
+public class Salon implements Composant<Message>
 {
     public final String topic;
     public List<Message> children;
