@@ -1,4 +1,4 @@
-package td2.forums;
+package td2.forumsrefactored;
 
 import java.util.List;
 import java.util.ArrayList;
