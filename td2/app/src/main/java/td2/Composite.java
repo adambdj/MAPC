@@ -8,5 +8,4 @@ public interface Composite<T>
     void addChild(T t);
     boolean removeChild(T t);
     boolean removeChildren(List<T> t);
-    
 }

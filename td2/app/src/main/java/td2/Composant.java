@@ -9,5 +9,6 @@ public interface Composant
     String getContent();
     void appendContent(String name);
     boolean isComposite();
+    String toString();
 
 }
