@@ -3,12 +3,67 @@
  */
 package td3;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
+import td3.commandes.*;
+import td3.exceptions.MonException;
+import td3.visitors.*;
+import td3.visitors.PrintRapportCommandes;
+import td3.visitors.XMLRapportCommandes;
+
+public final class App
+{
+    private final GroupeClient groupeClient;
+    private AbstractVisitor visiteur;
+
+    public App(String nomGroupe)
+    {
+        // manque dans UML
+        this.groupeClient = new GroupeClient(nomGroupe);
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+    public App(String nomGroupe, AbstractVisitor v)
+    {
+        this(nomGroupe);
+        this.visiteur = v;
     }
+
+    public void setVisiteur(AbstractVisitor v)
+    {
+        this.visiteur = v;
+    }
+
+    public static void main(String[] args) throws MonException
+    {
+        AbstractVisitor xmlVisitor = new XMLRapportCommandes();
+        AbstractVisitor printVisitor = new PrintRapportCommandes();
+        //
+        App a = new App("clients");
+        //
+        Client c1 = new Client("bob");
+        Client c2 = new Client("joe");
+        a.groupeClient.addClient(c1);
+        a.groupeClient.addClient(c2);
+        //
+        Commande cde1 = new Commande("cde1");
+        Commande cde2 = new Commande("cde2");
+        Commande cde3 = new Commande("cde3");
+        a.groupeClient.addCommande("bob",cde1);
+        a.groupeClient.addCommande("bob", cde2);
+        a.groupeClient.addCommande("joe", cde3);
+        //
+        Ligne l1 = new Ligne("l1",100);
+        Ligne l2 = new Ligne("l2",200);
+        Ligne l3 = new Ligne("l3",400);
+        Ligne l4 = new Ligne("l4",800);
+        a.groupeClient.addLigne("bob", "cde1", l1);
+        a.groupeClient.addLigne("bob", "cde1", l2);
+        a.groupeClient.addLigne("bob", "cde2", l3);
+        a.groupeClient.addLigne("joe", "cde3", l4);
+        //
+        a.setVisiteur(printVisitor);
+        a.groupeClient.accept((Visitor)a.visiteur);
+        //
+        a.setVisiteur(xmlVisitor);
+        a.groupeClient.accept((PrePostVisitor)a.visiteur);
+    }
+
 }
